@@ -2,12 +2,12 @@
 /*less than max width*/
 
 @mixin respond($breakpoint) {
-  @if $breakpoint == desktop {
-    @media (min-width: $desktop) {
+  @if $breakpoint == phone {
+    @media (max-width: $phone) {
       @content;
     }
   }
-  @if $breakpoint == tablet-vertical {
+  @if $breakpoint == tablet-ver {
     @media (max-width: $tablet-ver) {
       @content;
     }
@@ -17,8 +17,8 @@
       @content;
     }
   }
-  @if $breakpoint == phone {
-    @media (max-width: $phone) {
+  @if $breakpoint == desktop {
+    @media (max-width: $desktop) {
       @content;
     }
   }
