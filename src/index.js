@@ -1,5 +1,8 @@
 gsap.registerPlugin(CSSRulePlugin);
 
+let vh = window.innerHeight * 0.01;
+document.documentElement.style.setProperty("--vh", `${vh}px`);
+
 const dimensions = {
   headerHeight: gsap.getProperty(".header", "height"),
   headerWidth: gsap.getProperty(".header", "width"),
@@ -8,32 +11,9 @@ const dimensions = {
   logoMarginLeft: gsap.getProperty(".header__logo", "marginLeft"),
 };
 
-const fixedDimensions = {
-  headerHeight: {
-    phone: "8rem",
-    desktop: "11rem",
-  },
-};
+const gridElems = document.querySelectorAll(".grid__item");
 
-const VIEW_BREAKPOINTS = {
-  phone: 375,
-  tablet_ver: 1024,
-  tablet_hor: 768,
-  desktop: 1920,
-};
-
-const setDimension = (el) => {
-  const windowWidth = window.innerWidth;
-  if (windowWidth <= VIEW_BREAKPOINTS.phone) {
-    return fixedDimensions[el].phone;
-  } else if (windowWidth <= VIEW_BREAKPOINTS.tablet_ver) {
-    return fixedDimensions[el].tablet_hor;
-  } else if (windowWidth <= VIEW_BREAKPOINTS.tablet_hor) {
-    return fixedDimensions[el].tablet_ver;
-  } else if (windowWidth <= VIEW_BREAKPOINTS.desktop) {
-    return fixedDimensions[el].desktop;
-  }
-};
+const ANIM_DURATION = 0.3;
 
 const computeCenter = () => {
   let left = 0;
@@ -52,19 +32,21 @@ gsap.set(".header--centered", {
 const tl = gsap.timeline();
 const headerBefore = CSSRulePlugin.getRule(".header::before");
 
-tl.from(".splash", {
-  duration: 0.4,
-  delay: 1,
+tl.from("#splash", {
+  duration: ANIM_DURATION * 0.4,
+  delay: ANIM_DURATION * 1,
   ease: "none",
   opacity: 0,
-  top: "53vh",
+  // top: "calc(var(--vh,1vh)*53)",
+  top: 53 * vh,
 });
-tl.to(".splash", {
-  duration: 0.4,
-  delay: 1,
+tl.to("#splash", {
+  duration: ANIM_DURATION * 0.4,
+  delay: ANIM_DURATION * 1,
   ease: "none",
   opacity: 0,
-  top: "47vh",
+  // top: "calc(var(--vh,1vh)*47)",
+  top: 47 * vh,
 });
 tl.from(".header", {
   duration: 0.4,
@@ -73,19 +55,42 @@ tl.from(".header", {
   top: "2rem",
   opacity: 0,
 });
-tl.to(headerBefore, { duration: 1.5, width: "2rem", ease: "power2.in" });
+tl.to(headerBefore, {
+  duration: ANIM_DURATION * 1.5,
+  width: "2rem",
+  ease: "none",
+  ease: "power2.in",
+});
 tl.to(
   headerBefore,
-  { duration: 1.5, height: "0rem", ease: "power2.out" },
+  { duration: ANIM_DURATION * 1.5, height: "0rem", ease: "power1.out" },
   "-=.4"
 );
 tl.to(".header", {
-  duration: 1,
-  delay: 0.4,
-  ease: "power2.inut",
+  duration: ANIM_DURATION * 1,
+  delay: ANIM_DURATION * 0.4,
+  ease: "power2.inOut",
   transform: "translate(0,0)",
   height: "11rem",
-  onStart: () =>
-    document.querySelector(".header").classList.remove("header--centered"),
+  onComplete: () => {
+    document.querySelector(".header").classList.remove("header--centered");
+    document.querySelector(".splash").classList.add("splash--hidden");
+  },
   left: 0,
 });
+tl.from(
+  gridElems,
+  {
+    duration: ANIM_DURATION * 1.5,
+    opacity: 0,
+    left: "50vw",
+    scaleX: 1.5,
+    ease: "power2.inOut",
+    stagger: {
+      each: 0.25,
+      grid: "auto",
+      axis: "y",
+    },
+  },
+  "-=1"
+);

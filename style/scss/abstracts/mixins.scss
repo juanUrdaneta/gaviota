@@ -7,7 +7,12 @@
       @content;
     }
   }
-  @if $breakpoint == tablet-ver {
+  @if $breakpoint == smaller-text {
+    @media (max-width: $smaller-text) {
+      @content;
+    }
+  }
+  @if $breakpoint == tablet-vertical {
     @media (max-width: $tablet-ver) {
       @content;
     }

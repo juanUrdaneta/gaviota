@@ -2,8 +2,8 @@
   height: 5rem;
 
   position: fixed;
-  top: 50vh;
-  left: 50%;
+  top: calc(var(--vh, 1vh) * 50);
+  left: 50vw;
 
   margin: -2.5rem 0 0 -9.85rem;
 
@@ -33,4 +33,14 @@
   &--hidden {
     display: none;
   }
+}
+
+.splash__xpec {
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  left: 15rem;
+  top: 12rem;
+
+  transform: translate(0, 0);
 }
